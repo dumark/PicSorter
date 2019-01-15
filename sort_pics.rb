@@ -5,18 +5,18 @@ require 'fileutils'
 require 'exifr/jpeg'
 
 #Creates "temp" folder in "Képek"
-Dir.chdir("D:/Képek")
+Dir.chdir("/media/dumark/DATA/Képek/")
 unless Dir.exist?("temp")
     Dir.mkdir("temp")
 end
 
 #The target folder where the pics will be sorted
-Dir.chdir("D:/Képek")
+Dir.chdir("/media/dumark/DATA/Képek/")
 target_dir=Dir.pwd
 
 
 #Setting the working dir to "temp"
-Dir.chdir("D:/Képek/temp")
+Dir.chdir("/media/dumark/DATA/Képek/temp/")
 working_dir=Dir.pwd
 contents = Dir.entries(working_dir).count-2
 count_moved=0
@@ -31,7 +31,9 @@ Dir.glob("*"){|pic|
 	#since it is more accurate
 	if pic.end_with?('jpg','jpeg','JPG','JPEG')
 		if EXIFR::JPEG.new(pic).exif?
-			dates = EXIFR::JPEG.new(pic).date_time_original.to_s
+			dates = EXIFR::JPEG.new(pic).date_time.to_s
+		else
+			dates = File.stat(pic).mtime.to_s
 		end
 	else
 		dates = File.stat(pic).mtime.to_s
@@ -40,7 +42,7 @@ Dir.glob("*"){|pic|
     #Év / hónap / nap kinyerése változókba a mappákhoz
     year = dates.byteslice(0,4)
     month = dates.byteslice(5,2)
-    day = dates.byteslice(8,2)
+    day = year + '_' + month + '_' + dates.byteslice(8,2)
 
     #Mappák elkészítése a fájlnevek alapján
     unless Dir.exist?(File.join(target_dir,year))
