@@ -5,18 +5,18 @@ require 'fileutils'
 require 'exifr/jpeg'
 
 #Creates "temp" folder in "Képek"
-Dir.chdir("/media/dumark/DATA/Képek/")
+Dir.chdir("D:\Képek")
 unless Dir.exist?("temp")
     Dir.mkdir("temp")
 end
 
 #The target folder where the pics will be sorted
-Dir.chdir("/media/dumark/DATA/Képek/")
+Dir.chdir("D:\Képek")
 target_dir=Dir.pwd
 
 
 #Setting the working dir to "temp"
-Dir.chdir("/media/dumark/DATA/Képek/temp/")
+Dir.chdir("D:\Képek\temp")
 working_dir=Dir.pwd
 contents = Dir.entries(working_dir).count-2
 count_moved=0
